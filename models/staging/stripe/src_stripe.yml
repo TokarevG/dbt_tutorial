@@ -6,3 +6,33 @@ sources:
     schema: data_prep
     tables:
       - name: stripe_payments
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+          - name: orderid
+            tests:
+              - relationships:
+                  to: source('jaffle_shop', 'orders')
+                  field: id
+          - name: paymentmethod
+            tests:
+              - accepted_values:
+                  values:
+                    - credit_card
+                    - bank_transfer
+                    - coupon
+                    - gift_card
+          - name: status
+            tests:
+              - accepted_values:
+                  values:
+                    - success
+                    - fail
+          - name: amount
+            tests:
+              - not_null
+          - name: created
+            tests:
+              - not_null
