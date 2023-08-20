@@ -7,7 +7,8 @@ WITH payments AS (
         amount / 100 AS amount,
         created AS purchase_date,
     
-    FROM `dbt-tutorial.data_prep.stripe_payments`
+    FROM {{ source('stripe', 'stripe_payments') }}
+
 )
 
 SELECT * FROM payments
