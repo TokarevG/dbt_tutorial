@@ -2,29 +2,37 @@ version: 2
 
 sources:
   - name: jaffle_shop
+    description: A clone of a Postgres application database
     database: dbt-tutorial
     tables:
       - name: customers
+        description: Raw customers data
         columns:
           - name: id
+            description: Primary key for customers
             tests:
               - unique
               - not_null
       - name: orders
+        description: Raw orders data
         columns:
           - name: id
+            description: Primary key for orders
             tests:
               - unique
               - not_null
           - name: user_id
+            description: Foreign key to jaffle_shop.customers.id
             tests:
               - relationships:
                   field: id
                   to: source('jaffle_shop', 'id')
           - name: order_date
+            description: A date on which the order was made (YYYY-mm-dd)
             tests:
               - not_null
           - name: status
+            description: '{{ doc("order_status") }}'
             tests:
               - accepted_values:
                   values:
@@ -33,3 +41,10 @@ sources:
                     - return_pending
                     - returned
                     - placed
+        freshness: 
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 24
+            period: hour
