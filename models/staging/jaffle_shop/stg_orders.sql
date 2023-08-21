@@ -11,3 +11,4 @@ WITH orders AS (
 )
 
 SELECT * FROM orders
+{{ limit_data_in_dev(datetime_column_name='order_date', last_days=3000) }}
