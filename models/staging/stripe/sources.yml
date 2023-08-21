@@ -4,19 +4,24 @@ sources:
   - name: stripe
     database: dbt-tutorial
     schema: data_prep
+    description: A Clone of a Stripe payment system database
     tables:
       - name: stripe_payments
+        description: Raw payment data from Stripe
         columns:
           - name: id
+            description: Primary key for payment
             tests:
               - unique
               - not_null
           - name: orderid
+            description: Foreign key to jaffle_shop.orders.id
             tests:
               - relationships:
                   to: source('jaffle_shop', 'orders')
                   field: id
           - name: paymentmethod
+            description: '{{ doc("payment_method") }}'
             tests:
               - accepted_values:
                   values:
@@ -25,14 +30,17 @@ sources:
                     - coupon
                     - gift_card
           - name: status
+            description: '{{ doc("payment_status") }}'
             tests:
               - accepted_values:
                   values:
                     - success
                     - fail
           - name: amount
+            description: Amount of payment or discount
             tests:
               - not_null
           - name: created
+            description: Date of payment (YYYY-mm-dd)
             tests:
               - not_null
